@@ -1,0 +1,20 @@
+{
+  "name": "ami-voyages-whatsapp-bot",
+  "version": "1.0.0",
+  "description": "Chatbot WhatsApp multilingue pour l'agence Ami Voyages — filtrage automatique des questions récurrentes avant transfert agent humain.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "twilio": "^5.4.0"
+  }
+}
