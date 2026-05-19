@@ -35,7 +35,7 @@ export default function Header() {
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 2.4, ease: 'easeOut' }}
+        transition={{ duration: 0.6, delay: 1.2, ease: 'easeOut' }}
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
           scrolled
             ? 'bg-ami-purple/85 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.3)]'
