@@ -1,160 +1,121 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 interface LogoProps {
   className?: string;
   monochrome?: boolean;
   animateOnHover?: boolean;
+  /** Override default size classes (e.g. `h-16 sm:h-20`) */
+  sizeClassName?: string;
 }
 
 /**
- * Ami Voyages logo — matches the brand identity exactly.
+ * Ami Voyages logo — uses the official PNG at `/public/images/logo-ami-voyages.png`.
  *
- *   "Ami"  +  thick mauve V (filled, sharp bottom point)  +  "oyages"
- *
- * V is sized to match the cap height of the surrounding white letters,
- * with a very subtle top-to-bottom gradient for depth.
+ * Visual treatment to make it pop:
+ * - **Drop-shadow glow** : two layered mauve/magenta drop-shadows.
+ * - **Animated halo** : soft pulsing mauve disc blurred behind the logo.
+ * - **Hover lift** : slight upward translation + scale + intensified glow.
  */
 export default function Logo({
   className = '',
   monochrome = false,
   animateOnHover = true,
+  sizeClassName = 'h-12 sm:h-14 md:h-16',
 }: LogoProps) {
-  const vFill = monochrome ? '#ffffff' : 'url(#ami-v-grad)';
-
   return (
     <motion.div
-      className={`group relative inline-flex items-center ${className}`}
+      className={`relative inline-flex items-center ${className}`}
       whileHover={animateOnHover ? 'hover' : undefined}
       initial="rest"
       animate="rest"
     >
-      <svg
-        viewBox="0 0 320 64"
-        className="h-9 w-auto sm:h-10"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-label="Ami Voyages"
+      {/* Pulsing halo behind the logo */}
+      <motion.span
+        aria-hidden
+        variants={{
+          rest: { opacity: 0.35, scale: 1 },
+          hover: { opacity: 0.7, scale: 1.15 },
+        }}
+        animate={{
+          opacity: [0.3, 0.45, 0.3],
+        }}
+        transition={{
+          opacity: { duration: 3.2, repeat: Infinity, ease: 'easeInOut' },
+        }}
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-0 h-[140%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-ami-magenta/40 blur-2xl"
+      />
+
+      {/* Logo image with drop-shadow glow */}
+      <motion.div
+        variants={{
+          rest: { y: 0, scale: 1 },
+          hover: { y: -3, scale: 1.05 },
+        }}
+        transition={{ type: 'spring', stiffness: 280, damping: 16 }}
+        className="relative z-10"
       >
-        <defs>
-          <linearGradient id="ami-v-grad" x1="0" y1="0" x2="0.6" y2="1">
-            <stop offset="0%" stopColor="#C84BD8" />
-            <stop offset="60%" stopColor="#A030B5" />
-            <stop offset="100%" stopColor="#831A95" />
-          </linearGradient>
-        </defs>
-
-        {/* "Ami" */}
-        <text
-          x="0"
-          y="48"
-          fontFamily="var(--font-display), 'Bricolage Grotesque', sans-serif"
-          fontWeight="800"
-          fontSize="50"
-          fill="#ffffff"
-          letterSpacing="-0.02em"
-        >
-          Ami
-        </text>
-
-        {/* Thick mauve V — the V of "Voyages" */}
-        <motion.path
-          d="M 86 10 L 100 10 L 116 38 L 132 10 L 146 10 L 116 54 Z"
-          fill={vFill}
-          variants={{
-            rest: { y: 0, scale: 1 },
-            hover: { y: -2, scale: 1.06 },
+        <Image
+          src="/images/logo-ami-voyages.png"
+          alt="Ami Voyages"
+          width={244}
+          height={93}
+          priority
+          className={`w-auto ${sizeClassName}`}
+          style={{
+            filter: monochrome
+              ? 'brightness(0) invert(1) drop-shadow(0 0 12px rgba(217,70,217,0.55)) drop-shadow(0 6px 16px rgba(0,0,0,0.35))'
+              : 'drop-shadow(0 0 14px rgba(217,70,217,0.55)) drop-shadow(0 0 28px rgba(232,121,232,0.35)) drop-shadow(0 6px 18px rgba(0,0,0,0.45))',
           }}
-          transition={{ type: 'spring', stiffness: 260, damping: 16 }}
-          style={{ transformOrigin: '116px 32px' }}
         />
-
-        {/* "oyages" */}
-        <text
-          x="148"
-          y="48"
-          fontFamily="var(--font-display), 'Bricolage Grotesque', sans-serif"
-          fontWeight="800"
-          fontSize="50"
-          fill="#ffffff"
-          letterSpacing="-0.02em"
-        >
-          oyages
-        </text>
-      </svg>
+      </motion.div>
     </motion.div>
   );
 }
 
 /**
- * Animated logo for the loader — strokes draw themselves then fill in.
+ * Logo for the loader screen — big, centered, with a pulsing aura.
  */
 export function LogoTraced({ className = '' }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 320 64"
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Ami Voyages"
+    <motion.div
+      initial={{ opacity: 0, scale: 0.82 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      className={`relative inline-flex items-center justify-center ${className}`}
     >
-      <defs>
-        <linearGradient id="ami-v-grad-trace" x1="0" y1="0" x2="0.6" y2="1">
-          <stop offset="0%" stopColor="#C84BD8" />
-          <stop offset="60%" stopColor="#A030B5" />
-          <stop offset="100%" stopColor="#831A95" />
-        </linearGradient>
-      </defs>
-
-      {/* "Ami" — outline traces, then fills */}
-      <motion.text
-        x="0"
-        y="48"
-        fontFamily="var(--font-display), sans-serif"
-        fontWeight="800"
-        fontSize="50"
-        fill="#ffffff"
-        fillOpacity="0"
-        stroke="#ffffff"
-        strokeWidth="1"
-        letterSpacing="-0.02em"
-        initial={{ pathLength: 0, fillOpacity: 0 }}
-        animate={{ pathLength: 1, fillOpacity: 1 }}
-        transition={{ duration: 1.4, ease: 'easeInOut' }}
-      >
-        Ami
-      </motion.text>
-
-      {/* V — outline then fills with mauve */}
-      <motion.path
-        d="M 86 10 L 100 10 L 116 38 L 132 10 L 146 10 L 116 54 Z"
-        stroke="#E879E8"
-        strokeWidth="1.5"
-        fill="url(#ami-v-grad-trace)"
-        initial={{ pathLength: 0, fillOpacity: 0 }}
-        animate={{ pathLength: 1, fillOpacity: 1 }}
-        transition={{ duration: 1.6, ease: 'easeInOut', delay: 0.5 }}
+      {/* Soft outer halo */}
+      <motion.span
+        aria-hidden
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: 0.6, scale: 1.5 }}
+        transition={{ duration: 1.4, ease: 'easeOut' }}
+        className="absolute inset-0 rounded-full bg-ami-magenta/40 blur-3xl"
       />
 
-      {/* "oyages" */}
-      <motion.text
-        x="148"
-        y="48"
-        fontFamily="var(--font-display), sans-serif"
-        fontWeight="800"
-        fontSize="50"
-        fill="#ffffff"
-        fillOpacity="0"
-        stroke="#ffffff"
-        strokeWidth="1"
-        letterSpacing="-0.02em"
-        initial={{ pathLength: 0, fillOpacity: 0 }}
-        animate={{ pathLength: 1, fillOpacity: 1 }}
-        transition={{ duration: 1.4, ease: 'easeInOut', delay: 0.4 }}
-      >
-        oyages
-      </motion.text>
-    </svg>
+      {/* Sharper inner glow */}
+      <motion.span
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.4, 0.7, 0.4] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute inset-0 rounded-full bg-ami-magenta-soft/30 blur-2xl"
+      />
+
+      <Image
+        src="/images/logo-ami-voyages.png"
+        alt="Ami Voyages"
+        width={244}
+        height={93}
+        priority
+        className="relative h-auto w-full"
+        style={{
+          filter:
+            'drop-shadow(0 0 18px rgba(217,70,217,0.7)) drop-shadow(0 0 32px rgba(232,121,232,0.45)) drop-shadow(0 8px 24px rgba(0,0,0,0.4))',
+        }}
+      />
+    </motion.div>
   );
 }

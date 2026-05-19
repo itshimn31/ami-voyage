@@ -63,27 +63,49 @@ export const hero = {
 // =====================================================================
 // PARTENAIRES AÉRIENS
 // =====================================================================
+/**
+ * Partner airlines.
+ *
+ * `domain` is the carrier's corporate domain — used to fetch their actual
+ * brand logo from logo.dev (a B2B CDN designed for displaying partner
+ * logos in commercial contexts). The component renders `<Image>` against
+ * `https://img.logo.dev/{domain}` and falls back to a brand-colored
+ * typographic card if the request fails (e.g. logo.dev rate-limited).
+ *
+ * To override a logo with a locally-hosted licensed SVG, drop the file
+ * in `/public/images/partners/<slug>.svg` and set `logo: '/images/partners/<slug>.svg'`.
+ */
+export type Partner = {
+  name: string;
+  iata: string;
+  domain: string;
+  bg: string;
+  text?: string;
+  accent?: string;
+  logo?: string;
+};
+
 export const partners = {
   eyebrow: 'Nos partenaires majeurs',
   list: [
-    'Emirates',
-    'Brussels Airlines',
-    'Kuwait Airways',
-    'Etihad',
-    'Saudia',
-    'Turkish Airlines',
-    'Air India',
-    'Corsair',
-    'TAP Portugal',
-    'Royal Air Maroc',
-    'Air France',
-    'Lufthansa',
-    'SriLankan',
-    'Condor',
-    'JAL',
-    'Qatar Airways',
-    'Ethiopian Airlines',
-  ],
+    { name: 'Air France', iata: 'AF', domain: 'airfrance.com', bg: '#002157', accent: '#E2001A' },
+    { name: 'Emirates', iata: 'EK', domain: 'emirates.com', bg: '#D71921', accent: '#FFFFFF' },
+    { name: 'Lufthansa', iata: 'LH', domain: 'lufthansa.com', bg: '#05164D', accent: '#FFCC00' },
+    { name: 'Turkish Airlines', iata: 'TK', domain: 'turkishairlines.com', bg: '#C70A0C', accent: '#FFFFFF' },
+    { name: 'Qatar Airways', iata: 'QR', domain: 'qatarairways.com', bg: '#5C0632', accent: '#A57B26' },
+    { name: 'Etihad', iata: 'EY', domain: 'etihad.com', bg: '#A88A4A', accent: '#3A2E1F' },
+    { name: 'Air India', iata: 'AI', domain: 'airindia.com', bg: '#C8102E', accent: '#FFB81C' },
+    { name: 'SriLankan', iata: 'UL', domain: 'srilankan.com', bg: '#003E80', accent: '#F5A800' },
+    { name: 'Saudia', iata: 'SV', domain: 'saudia.com', bg: '#006C35', accent: '#FFFFFF' },
+    { name: 'Kuwait Airways', iata: 'KU', domain: 'kuwaitairways.com', bg: '#0072BC', accent: '#E2001A' },
+    { name: 'Royal Air Maroc', iata: 'AT', domain: 'royalairmaroc.com', bg: '#C8102E', accent: '#006633' },
+    { name: 'TAP Portugal', iata: 'TP', domain: 'flytap.com', bg: '#C8102E', accent: '#009639' },
+    { name: 'Brussels Airlines', iata: 'SN', domain: 'brusselsairlines.com', bg: '#9F1B32', accent: '#FFFFFF' },
+    { name: 'Corsair', iata: 'SS', domain: 'flycorsair.com', bg: '#003F87', accent: '#FFFFFF' },
+    { name: 'Condor', iata: 'DE', domain: 'condor.com', bg: '#FFE74C', text: '#1A1A1A', accent: '#1A1A1A' },
+    { name: 'Ethiopian Airlines', iata: 'ET', domain: 'ethiopianairlines.com', bg: '#006A4D', accent: '#FFD700' },
+    { name: 'JAL', iata: 'JL', domain: 'jal.com', bg: '#E60012', accent: '#FFFFFF' },
+  ] satisfies Partner[],
 };
 
 // =====================================================================
@@ -293,6 +315,54 @@ export const stats = {
     { value: 50, suffix: '+', label: 'Destinations' },
     { value: 10000, suffix: '+', label: 'Voyageurs satisfaits' },
     { value: 98, suffix: '%', label: 'Taux de satisfaction' },
+  ],
+};
+
+// =====================================================================
+// TEMOIGNAGES — Social proof clients
+// =====================================================================
+export const testimonials = {
+  eyebrow: 'Ils nous font confiance',
+  title: 'Ils ont voyagé avec nous',
+  subtitle:
+    'Quelques retours parmi les milliers de voyageurs accompagnés par Ami Voyages depuis 2002.',
+  items: [
+    {
+      id: 1,
+      name: 'Aïcha D.',
+      destination: 'Sénégal · Dakar',
+      date: 'Mars 2026',
+      rating: 5,
+      quote:
+        'Vingt ans que je n’étais pas retournée au pays. Ami Voyages a tout pris en charge — vol, formalités, conseils. Je n’aurais pas pu rêver mieux pour ce voyage en famille.',
+    },
+    {
+      id: 2,
+      name: 'Rajesh P.',
+      destination: 'Inde · Kolkata',
+      date: 'Janvier 2026',
+      rating: 5,
+      quote:
+        'Service impeccable. L’équipe comprend mes besoins et m’a obtenu un tarif imbattable sur Air India avec des conditions de bagages parfaites.',
+    },
+    {
+      id: 3,
+      name: 'Marie K.',
+      destination: 'Cameroun · Douala',
+      date: 'Décembre 2025',
+      rating: 5,
+      quote:
+        'Je passe désormais exclusivement par Ami Voyages pour Douala. Tarifs négociés, billets modifiables, et un vrai contact humain à l’agence.',
+    },
+    {
+      id: 4,
+      name: 'Sanjay L.',
+      destination: 'Sri Lanka · Colombo',
+      date: 'Novembre 2025',
+      rating: 5,
+      quote:
+        'On parle d’agence "ethnique" — chez Ami Voyages c’est vrai : ils comprennent mes contraintes familiales et culturelles. 22 ans d’expertise, ça se sent.',
+    },
   ],
 };
 
