@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Phone,
@@ -21,6 +21,45 @@ import { contact, contactSection } from '@/data/content';
 export default function ContactSection() {
   const f = contactSection.fields;
   const [submitted, setSubmitted] = useState(false);
+  const [highlight, setHighlight] = useState(false);
+
+  // Listen for prefill events from the Hero wizard
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{
+        destination?: string;
+        departure?: string;
+        retour?: string;
+        travelers?: string;
+      }>;
+      const { destination, departure, retour, travelers } = ce.detail || {};
+
+      const setField = (id: string, value?: string) => {
+        if (!value) return;
+        const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
+        if (el) el.value = value;
+      };
+
+      setField('cityTo', destination);
+      setField('departure', departure);
+      setField('return', retour);
+      if (travelers) {
+        const msg = document.getElementById('message') as HTMLTextAreaElement | null;
+        if (msg && !msg.value) {
+          msg.value = `Voyage pour ${travelers} voyageur${
+            travelers === '1' ? '' : 's'
+          } vers ${destination || ''}, départ ${departure || ''} retour ${retour || ''}.`;
+        }
+      }
+
+      // Flash highlight on the form to signal it was prefilled
+      setHighlight(true);
+      setTimeout(() => setHighlight(false), 1800);
+    };
+
+    window.addEventListener('ami:prefill-contact', handler);
+    return () => window.removeEventListener('ami:prefill-contact', handler);
+  }, []);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -153,7 +192,10 @@ export default function ContactSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15 }}
             onSubmit={onSubmit}
-            className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A0922] via-ami-purple-deep to-[#2A0F35] p-7 shadow-ami-glow sm:p-10"
+            animate={highlight ? { boxShadow: '0 0 0 4px rgba(217,70,217,0.45), 0 30px 80px -20px rgba(93,26,107,0.6)' } : undefined}
+            className={`relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A0922] via-ami-purple-deep to-[#2A0F35] p-7 shadow-ami-glow transition-shadow duration-700 sm:p-10 ${
+              highlight ? 'ring-2 ring-ami-magenta' : ''
+            }`}
           >
             <div className="absolute inset-0 topo-bg opacity-12" aria-hidden />
             <div

@@ -8,6 +8,7 @@ import PlaneTrail from '@/components/PlaneTrail';
 import Formalities from '@/components/Formalities';
 import Exclusivities from '@/components/Exclusivities';
 import Stats from '@/components/Stats';
+import Testimonials from '@/components/Testimonials';
 import Values from '@/components/Values';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -25,6 +26,7 @@ export default function HomePage() {
       <Formalities />
       <Exclusivities />
       <Stats />
+      <Testimonials />
       <Values />
       <ContactSection />
       <Footer />
