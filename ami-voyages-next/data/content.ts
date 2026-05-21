@@ -56,6 +56,30 @@ export const hero = {
     { icon: 'star', label: '4.8/5 — 500+ avis' },
   ],
   scrollLabel: 'Découvrir',
+  /**
+   * Rotating background images for the Hero — same "iconic destination at
+   * golden hour" mood, but cycling through 3 of our offered regions every
+   * ~6 seconds with a smooth crossfade. Parallax wraps all of them.
+   */
+  bgImages: [
+    {
+      url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=2400&q=80',
+      alt: 'Taj Mahal au coucher du soleil — Inde',
+      country: 'Inde',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=2400&q=80',
+      alt: 'Savane africaine avec éléphants au coucher du soleil',
+      country: 'Afrique Subsaharienne',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1581791534137-9eddc5e72d1e?auto=format&fit=crop&w=2400&q=80',
+      alt: 'Sigiriya, rocher du lion — Sri Lanka',
+      country: 'Sri Lanka',
+    },
+  ],
+  // Legacy single image (kept for backwards compatibility with any
+  // component that still reads hero.bgImage).
   bgImage:
     'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=2400&q=80',
 };

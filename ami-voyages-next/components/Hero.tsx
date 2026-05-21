@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { ChevronDown, ArrowUpRight } from 'lucide-react';
@@ -22,6 +22,18 @@ export default function Hero() {
   const asia = destinations.cards[0];
   const africa = destinations.cards[1];
 
+  // Rotating Hero photos — crossfade between the iconic destinations.
+  const images = hero.bgImages;
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const id = setInterval(() => {
+      setActiveIdx((i) => (i + 1) % images.length);
+    }, 6500);
+    return () => clearInterval(id);
+  }, [images.length]);
+
   return (
     <section
       id="hero"
@@ -32,21 +44,34 @@ export default function Hero() {
       {/* Animated mauve gradient base */}
       <div className="absolute inset-0 hero-gradient" aria-hidden />
 
-      {/* Parallax photo layer */}
+      {/* Parallax photo layer — crossfading rotation of iconic destinations */}
       <motion.div
         style={{ y: bgY }}
         className="absolute inset-0 -z-0"
         aria-hidden
       >
         <div className="relative h-[120%] w-full">
-          <Image
-            src={hero.bgImage}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-55 mix-blend-luminosity"
-          />
+          {images.map((img, i) => (
+            <motion.div
+              key={img.url}
+              initial={false}
+              animate={{
+                opacity: i === activeIdx ? 1 : 0,
+                scale: i === activeIdx ? 1 : 1.04,
+              }}
+              transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={img.url}
+                alt={img.alt}
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                className="object-cover opacity-55 mix-blend-luminosity"
+              />
+            </motion.div>
+          ))}
         </div>
       </motion.div>
 
