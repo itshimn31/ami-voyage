@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ChevronDown, ArrowUpRight } from 'lucide-react';
 import RevealText from './RevealText';
 import SearchBar from './SearchBar';
+import HoursTicket from './HoursTicket';
 import { hero, destinations } from '@/data/content';
 
 export default function Hero() {
@@ -197,6 +198,11 @@ export default function Hero() {
           {/* Search bar */}
           <div className="mt-8 w-full">
             <SearchBar />
+          </div>
+
+          {/* Opening-hours ticket — visible right under the search bar */}
+          <div className="mt-8 flex justify-center">
+            <HoursTicket />
           </div>
         </div>
 
