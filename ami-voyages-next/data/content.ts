@@ -32,8 +32,16 @@ export const contact = {
   // WhatsApp Business number in international format (no '+' or spaces).
   // Used by the floating chat widget — click opens wa.me/<number>?text=...
   // and the conversation lands in the existing chatbot (chatbot_whatsapp/)
-  // via Twilio. To change, just replace this string.
-  whatsapp: '33752355827',
+  // via Twilio.
+  //
+  // 14155238886 = Twilio WhatsApp **Sandbox** (free, shared across all
+  // Twilio accounts in test mode). Visitors must send `join <code>` to
+  // this number first to authorize the sandbox to message them back
+  // (see Twilio Console → Messaging → Try it out → Sandbox settings).
+  //
+  // For production, replace with the agency's verified WhatsApp Business
+  // number (Twilio paid number + Facebook approval).
+  whatsapp: '14155238886',
 };
 
 // =====================================================================
