@@ -29,6 +29,55 @@ export const contact = {
     lines: ['Ouvert', 'du lundi au samedi', 'de 10h à 18h30', 'sans interruption'],
   },
   facebook: 'https://www.facebook.com/amivoyages2002',
+  // WhatsApp Business number in international format (no '+' or spaces).
+  // Used by the floating chat widget — click opens wa.me/<number>?text=...
+  // and the conversation lands in the existing chatbot (chatbot_whatsapp/)
+  // via Twilio. To change, just replace this string.
+  whatsapp: '33752355827',
+};
+
+// =====================================================================
+// WHATSAPP CHAT WIDGET — floating bubble on every page
+// =====================================================================
+export const whatsappChat = {
+  // Small persona shown in the open chat card
+  agent: {
+    name: 'Conseiller Ami Voyages',
+    role: 'Lun–Sam · 10h–18h30',
+    avatarInitials: 'AV',
+  },
+  // Teaser bubble shown above the FAB ~6 s after page load
+  teaser: '👋 Une question ? On vous répond sur WhatsApp en quelques minutes.',
+  // Greeting at the top of the open chat card
+  greeting:
+    'Bonjour 👋 Comment pouvons-nous vous aider ? Choisissez un sujet — vous serez redirigé vers WhatsApp où notre conseiller prendra le relais.',
+  // Quick-action choices — each opens WhatsApp with a pre-filled message
+  choices: [
+    {
+      emoji: '💸',
+      label: 'Je veux un devis',
+      message:
+        'Bonjour, je souhaite obtenir un devis pour un vol. Merci de me rappeler les informations à vous transmettre.',
+    },
+    {
+      emoji: '✈️',
+      label: 'Question sur un vol',
+      message:
+        'Bonjour, j’ai une question concernant un vol (réservation, bagages, modification…).',
+    },
+    {
+      emoji: '📅',
+      label: 'Disponibilités & dates',
+      message:
+        'Bonjour, je souhaite connaître les disponibilités et les tarifs sur une destination.',
+    },
+    {
+      emoji: '💬',
+      label: 'Autre demande',
+      message: 'Bonjour, je souhaite échanger avec un conseiller Ami Voyages.',
+    },
+  ],
+  footer: 'La discussion se poursuit sur WhatsApp.',
 };
 
 export const navigation = [

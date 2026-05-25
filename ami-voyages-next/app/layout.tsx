@@ -5,6 +5,7 @@ import './globals.css';
 import LenisProvider from '@/components/LenisProvider';
 import CustomCursor from '@/components/CustomCursor';
 import Loader from '@/components/Loader';
+import WhatsAppChat from '@/components/WhatsAppChat';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -69,6 +70,7 @@ export default function RootLayout({
         <Loader />
         <CustomCursor />
         <LenisProvider>{children}</LenisProvider>
+        <WhatsAppChat />
       </body>
     </html>
   );
