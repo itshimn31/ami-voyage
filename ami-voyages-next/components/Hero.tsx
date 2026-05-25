@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { Check, Star, ChevronDown, ArrowUpRight } from 'lucide-react';
+import { ChevronDown, ArrowUpRight } from 'lucide-react';
 import RevealText from './RevealText';
 import SearchBar from './SearchBar';
+import HoursTicket from './HoursTicket';
 import { hero, destinations } from '@/data/content';
 
 export default function Hero() {
@@ -22,6 +23,18 @@ export default function Hero() {
   const asia = destinations.cards[0];
   const africa = destinations.cards[1];
 
+  // Rotating Hero photos — crossfade between the iconic destinations.
+  const images = hero.bgImages;
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const id = setInterval(() => {
+      setActiveIdx((i) => (i + 1) % images.length);
+    }, 6500);
+    return () => clearInterval(id);
+  }, [images.length]);
+
   return (
     <section
       id="hero"
@@ -32,21 +45,34 @@ export default function Hero() {
       {/* Animated mauve gradient base */}
       <div className="absolute inset-0 hero-gradient" aria-hidden />
 
-      {/* Parallax photo layer */}
+      {/* Parallax photo layer — crossfading rotation of iconic destinations */}
       <motion.div
         style={{ y: bgY }}
         className="absolute inset-0 -z-0"
         aria-hidden
       >
         <div className="relative h-[120%] w-full">
-          <Image
-            src={hero.bgImage}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-55 mix-blend-luminosity"
-          />
+          {images.map((img, i) => (
+            <motion.div
+              key={img.url}
+              initial={false}
+              animate={{
+                opacity: i === activeIdx ? 1 : 0,
+                scale: i === activeIdx ? 1 : 1.04,
+              }}
+              transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={img.url}
+                alt={img.alt}
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                className="object-cover opacity-55 mix-blend-luminosity"
+              />
+            </motion.div>
+          ))}
         </div>
       </motion.div>
 
@@ -86,7 +112,7 @@ export default function Hero() {
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2.5, duration: 0.8 }}
+            transition={{ delay: 1.3, duration: 0.6 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/90 backdrop-blur-md"
           >
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ami-magenta" />
@@ -98,21 +124,21 @@ export default function Hero() {
               as="span"
               text={hero.title.pre}
               className="block"
-              delay={2.6}
+              delay={1.4}
             />
             <RevealText
               as="span"
               text={hero.title.accent}
               className="block text-gradient-magenta"
-              delay={2.9}
-              stagger={0.08}
+              delay={1.7}
+              stagger={0.06}
             />
           </h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 3.6, duration: 0.8 }}
+            transition={{ delay: 2.3, duration: 0.7 }}
             className="mt-7 max-w-xl text-balance text-base text-white/85 sm:text-lg"
           >
             {hero.subtitle}
@@ -124,7 +150,7 @@ export default function Hero() {
             animate="visible"
             variants={{
               hidden: {},
-              visible: { transition: { staggerChildren: 0.18, delayChildren: 3.85 } },
+              visible: { transition: { staggerChildren: 0.14, delayChildren: 2.55 } },
             }}
             className="mt-7 flex flex-col flex-wrap items-center justify-center gap-3 sm:flex-row sm:gap-4 lg:hidden"
             aria-label="Régions de spécialité"
@@ -174,40 +200,10 @@ export default function Hero() {
             <SearchBar />
           </div>
 
-          {/* Floating badges */}
-          <motion.ul
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.15, delayChildren: 4 } },
-            }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-3"
-          >
-            {hero.badges.map((badge, i) => (
-              <motion.li
-                key={badge.label}
-                variants={{
-                  hidden: { opacity: 0, y: 16, scale: 0.9 },
-                  visible: { opacity: 1, y: 0, scale: 1 },
-                }}
-                animate={{
-                  y: [0, -6, 0],
-                }}
-                transition={{
-                  y: { duration: 4 + i * 0.4, repeat: Infinity, ease: 'easeInOut' },
-                }}
-                className="flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md sm:text-sm"
-              >
-                {badge.icon === 'check' ? (
-                  <Check className="h-4 w-4 text-ami-magenta-soft" strokeWidth={2.5} />
-                ) : (
-                  <Star className="h-4 w-4 fill-ami-magenta-soft text-ami-magenta-soft" />
-                )}
-                {badge.label}
-              </motion.li>
-            ))}
-          </motion.ul>
+          {/* Opening-hours ticket — visible right under the search bar */}
+          <div className="mt-8 flex justify-center">
+            <HoursTicket />
+          </div>
         </div>
 
         {/* RIGHT — Afrique Subsaharienne card (lg+) */}
@@ -219,7 +215,7 @@ export default function Hero() {
         href="#partners"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 4, duration: 0.8 }}
+        transition={{ delay: 2.8, duration: 0.7 }}
         className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-white/70 hover:text-white"
         aria-label="Découvrir la suite"
       >
@@ -259,7 +255,7 @@ function HeroRegionCard({
     <motion.aside
       initial={{ opacity: 0, x: side === 'left' ? -40 : 40, scale: 0.94 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
-      transition={{ delay: 3.4, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 2.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
       className="hidden lg:block"
       aria-label={card.title}
@@ -292,7 +288,7 @@ function HeroRegionCard({
               key={c.name}
               initial={{ opacity: 0, x: side === 'left' ? -10 : 10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 3.7 + i * 0.04, duration: 0.4 }}
+              transition={{ delay: 2.5 + i * 0.04, duration: 0.4 }}
               className="flex items-center gap-2 text-[13px] font-medium leading-tight text-white/90"
             >
               <span className="text-base leading-none">{c.flag}</span>
